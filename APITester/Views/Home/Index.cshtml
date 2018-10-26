@@ -1,94 +1,100 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿<div class="topNav">
+    <label>API URL: </label> <input id="apiUrl" size="75" /><button id="apiSubmit" class="sbbtn btn" type="submit">Submit</button>
+</div>
+
+<div class="mainNav">
+    <h1>API Tester</h1>
+    <br />
+    <div id="" class="inputParams">
+        <div class="params1">
+
+            <br />
+            <label>Type: </label>
+            <select id="requestType">
+                <option value="Get">Get</option>
+                <option value="Post">Post</option>
+            </select>
+            <br />
+            <label>Number of tests: </label>   <input id="testNum" />
+            <br />
+            <label>Concurrent Test: </label>   <input id="conCount" />
+            <br />
+            <label>Test Delay (ms): </label>   <input id="testDelay" value="0" />
+        </div>    
+    </div>
+    <div class="resultStats">
+        <h4>Current Result</h4>
+        <label id="sucCount">Success Count: </label>
+        <br />
+        <label id="avgTime">Average Time: </label>
+        <br />
+        <label id="elapsedTime">Elapsed Time: </label>
+    </div>
+
+    <button id="clrBtn" class="clearBtn btn">Clear All Results</button>
+</div>
+
+<div id="mainDiv" class="mainDiv">
+
+    <div id="apiInput" class="messageBod">
+        <label>JSON Body: </label>
+        <br />
+        <textarea id="jsonBody" rows="15" cols="100"></textarea>
+        <br />
+        
+    </div>
+
+    <br />
+    <div id="apiReturn" class="responseBod">
+        <label>API Return Text: </label>
+        <br />
+        <textarea id="returnText" rows="15" cols="100">
+
+        </textarea>
+    </div>
+
+        
+
+    <div id="apiResults" class="resultsBod">
+        <h1>Results</h1>
+
+        <div id="plotDiv" class="lgDiv">
+
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="~/js/responsePlot.js"></script>
+    <script type="text/javascript">
+    $('#apiSubmit').on('click', function () {
+        var apiUrl = $("#apiUrl").val();
+        var testNum = $("#testNum").val();
+        var conCount = $("#conCount").val();
+        var jsonBody = $("#jsonBody").val();
+        var testDelay = $("#testDelay").val();
+        var requestType = $("#requestType").val();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("startAPITest", "Home")',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ apiUrl: apiUrl, testDelay: testDelay, testNum: testNum, conNum: conCount, jsonBody: jsonBody, requestType: requestType }),
+            success: function (data) {
+                $("#returnText").val(data.finalResponseText);
+                $("#sucCount").html("Success Count:  " + data.testData.successCount);
+                $("#elapsedTime").html("Elapsed Time: " + data.timings.totalTime + " ms")
+                $("#avgTime").html("Average Time: " + avgCalc(data.timings.elapsedTimes) + " ms");
+                drawData(JSON.parse(data.timings.jsonTimes));
+            }
+        });
+        });
+
+        $("#clrBtn").on("click", function () {
+            $("svg").remove();
+        });
+
+    </script>
 }
-
-<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <img src="~/images/banner1.svg" alt="ASP.NET" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how to build ASP.NET apps that can run anywhere.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525028&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    There are powerful new features in Visual Studio for building modern web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525030&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner3.svg" alt="Microsoft Azure" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525027&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-    </div>
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
-</div>
-
-<div class="row">
-    <div class="col-md-3">
-        <h2>Application uses</h2>
-        <ul>
-            <li>Sample pages using ASP.NET Core MVC</li>
-            <li>Theming using <a href="https://go.microsoft.com/fwlink/?LinkID=398939">Bootstrap</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>How to</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699315">Manage User Secrets using Secret Manager.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699316">Use logging to log a message.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699317">Add packages using NuGet.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Overview</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699320">Fundamentals of ASP.NET Core such as Startup and middleware.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398602">Working with Data</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398603">Security</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699321">Client side development</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699322">Develop on different platforms</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699323">Read more on the documentation site</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Run &amp; Deploy</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517851">Run your app</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517853">Run tools such as EF migrations and more</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure Web Apps</a></li>
-        </ul>
-    </div>
-</div>

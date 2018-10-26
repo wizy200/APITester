@@ -5,39 +5,34 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using APITester.Models;
+using APITester.APIUtilities;
+using Newtonsoft.Json;
 
 namespace APITester.Controllers
 {
     public class HomeController : Controller
     {
+        private IAPIUtils _utils;
+
+        public HomeController(IAPIUtils utils)
+        {
+            _utils = utils;
+        }
+
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult About()
+        public async Task<JsonResult> startAPITest([FromBody] APIVMod apiDat)
         {
-            ViewData["Message"] = "Your application description page.";
 
-            return View();
+            apiDat = await _utils.testAPI(apiDat);
+            //var dict = apiDat.timings.elapsedTimes.Select((s, i) => new { s, i }).ToDictionary(x => x.i, x => x.s);
+            apiDat.timings.jsonTimes = JsonConvert.SerializeObject(apiDat.timings.elapsedTimes);
+            return Json(apiDat);
         }
+       
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
