@@ -9,17 +9,17 @@
         <div class="params1">
 
             <br />
-            <label>Type: </label>
+            <label class="navLabel">Type: </label>
             <select id="requestType">
                 <option value="Get">Get</option>
                 <option value="Post">Post</option>
             </select>
             <br />
-            <label>Number of tests: </label>   <input id="testNum" />
+            <label class="navLabel" >Number of tests: </label>   <input class="navInput" id="testNum" />
             <br />
-            <label>Concurrent Test: </label>   <input id="conCount" />
+            <label class="navLabel">Concurrent Test: </label>   <input class="navInput" id="conCount" />
             <br />
-            <label>Test Delay (ms): </label>   <input id="testDelay" value="0" />
+            <label class="navLabel">Test Delay (ms): </label>   <input class="navInput" id="testDelay" value="0" />
         </div>    
     </div>
     <div class="resultStats">
@@ -39,7 +39,7 @@
     <div id="apiInput" class="messageBod">
         <label>JSON Body: </label>
         <br />
-        <textarea id="jsonBody" rows="15" cols="100"></textarea>
+        <textarea id="jsonBody" rows="20" cols="75"></textarea>
         <br />
         
     </div>
@@ -48,7 +48,7 @@
     <div id="apiReturn" class="responseBod">
         <label>API Return Text: </label>
         <br />
-        <textarea id="returnText" rows="15" cols="100">
+        <textarea id="returnText" rows="20" cols="75">
 
         </textarea>
     </div>

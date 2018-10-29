@@ -13,6 +13,7 @@
     var yScale = d3.scaleLinear().domain([0, d3.max(data)]).range([height, 0]); 
 
     var xAxis = d3.axisBottom().scale(xScale);
+
     var yAxis = d3.axisLeft().scale(yScale);
 
     svg.append("g").attr("transform", "translate(0 " + height + ")").call(xAxis);

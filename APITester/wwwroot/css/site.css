@@ -87,6 +87,9 @@ padding-top:5%;
     font-size:150%;
     padding-top: 1%
 }
+.topNav input{
+    width: 60%;
+}
 .messageBod {
     position: fixed;
     border-right: solid;
@@ -99,6 +102,11 @@ padding-top:5%;
     top:8%;
     left:10%;
 }
+    .messageBod textarea {
+        resize: none;
+        height: 90%;
+        width: 95%;
+    }
 .responseBod {
     top: 8%;
     position: fixed;
@@ -109,6 +117,11 @@ padding-top:5%;
     border-bottom: solid;
     border-width: 1px;
 }
+    .responseBod textarea{
+       resize:none;
+       height: 90%;
+       width: 95%;
+    }
 .resultsBod {
     position: fixed;
     width:89%;
@@ -124,4 +137,10 @@ padding-top:5%;
     width: 10%;
     height:65%;
     margin-left: 1%;
+}
+.navLabel{
+    width: 60%;
+}
+.navInput{
+    width: 90%;
 }
